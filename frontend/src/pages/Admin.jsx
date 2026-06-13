@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+  useState,
+  useEffect,
+  useRef
+} from "react";
+
 import { socket } from "../services/socket";
 
 export default function Admin() {
@@ -6,6 +11,12 @@ export default function Admin() {
   // ====================
   // Estados
   // ====================
+const musicRef =
+  useRef(null);
+
+const [musicStarted,
+setMusicStarted] =
+useState(false);
 
 const volverInicio = () => {
 
@@ -377,6 +388,20 @@ useEffect(() => {
 
 }, []);
 
+useEffect(() => {
+
+  musicRef.current =
+    new Audio(
+      "/audio/Apex_Drift.mp3"
+    );
+
+  musicRef.current.loop =
+    true;
+
+  musicRef.current.volume =
+    0.10;
+
+}, []);
 
   // ====================
   // Render
@@ -1015,6 +1040,57 @@ position: "relative",
 </div>
 
 <br />
+
+<button
+  onClick={() => {
+
+    if (!musicStarted) {
+
+      musicRef.current.play();
+
+      setMusicStarted(true);
+
+    } else {
+
+      musicRef.current.pause();
+
+      setMusicStarted(false);
+
+    }
+
+  }}
+
+  style={{
+    position: "fixed",
+
+    top: "15px",
+
+    right: "15px",
+
+    width: "45px",
+
+    height: "45px",
+
+    borderRadius: "50%",
+
+    border: "none",
+
+    background:
+      "rgba(255,255,255,0.08)",
+
+    color: "white",
+
+    fontSize: "22px",
+
+    cursor: "pointer",
+
+    zIndex: 9999
+  }}
+>
+  {musicStarted
+    ? "🔊"
+    : "🔇"}
+</button>
 
 <button
   onClick={() => {
