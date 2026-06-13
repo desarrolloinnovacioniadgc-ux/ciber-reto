@@ -661,7 +661,7 @@ export default function Player() {
           >
 
             {result.correcta
-              ? "✅"
+              ? "✔️"
               : "❌"}
 
           </h1>

@@ -351,7 +351,24 @@ useEffect(() => {
 
     }
 
+    @keyframes winnerPulse {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+}
+
   `;
+  
 
   document.head.appendChild(style);
 
@@ -402,111 +419,162 @@ if (finalRanking) {
 
   return (
 
-    <div
-      style={{
-        padding: 20,
-        textAlign:
-          "center"
-      }}
-    >
-
-<button
-  onClick={volverInicio}
+  <div
   style={{
-    position: "fixed",
-    top: "15px",
-    left: "15px",
-    width: "45px",
-    height: "45px",
-    borderRadius: "50%",
-    border: "none",
-    background: "rgba(255,255,255,0.08)",
+    minHeight: "100vh",
+
+    background:
+      "radial-gradient(circle,#0f172a,#020617)",
+
     color: "white",
-    fontSize: "22px",
-    cursor: "pointer",
-    zIndex: 9999
+
+    textAlign: "center",
+
+    padding: "40px"
   }}
 >
-  ←
-</button>
+    <button
+      onClick={volverInicio}
+      style={{
+        position: "fixed",
+        top: "15px",
+        left: "15px",
+        width: "45px",
+        height: "45px",
+        borderRadius: "50%",
+        border: "none",
+        background: "rgba(255,255,255,0.08)",
+        color: "white",
+        fontSize: "22px",
+        cursor: "pointer",
+        zIndex: 9999
+      }}
+    >
+      ←
+    </button>
 
-      <h1>
-        🏆 RESULTADOS FINALES
-      </h1>
+    <h1
+  style={{
+    fontSize: "60px",
 
-      {positions
-        .slice(0, 3)
-        .map(
-          (
-            score,
-            index
-          ) => {
+    color: "#38bdf8",
 
-            const medal =
-              index === 0
-                ? "🥇"
-                : index === 1
-                ? "🥈"
-                : "🥉";
+    textShadow:
+      "0 0 15px #38bdf8",
 
-            return (
+    marginBottom: "50px"
+  }}
+>
+  🏆 RESULTADOS FINALES
+</h1>
 
-              <div
-                key={score}
-                style={{
-                  marginBottom:
-                    "40px"
-                }}
-              >
+    {positions
+      .slice(0, 3)
+      .map(
+        (score, index) => {
 
-                <h2>
+          const medal =
+            index === 0
+              ? "🥇"
+              : index === 1
+              ? "🥈"
+              : "🥉";
 
-                  {medal}
+          return (
 
-                  {" "}
+            <div
+  key={score}
+  style={{
 
-                  {index + 1}° PUESTO
+    maxWidth: "700px",
 
-                </h2>
+    margin:
+      "0 auto 30px auto",
 
-                {groupedRanking[
-                  score
-                ].map(
-                  player => (
+    padding: "20px",
 
-                    <div
-                      key={
-                        player.id
-                      }
-                      style={{
-                        fontSize:
-                          "32px",
-                        marginBottom:
-                          "10px"
-                      }}
-                    >
+    borderRadius: "25px",
 
-                      {player.icono}
+    background:
+      "rgba(255,255,255,0.05)",
 
-                      {" "}
+    border:
+      index === 0
+      ? "2px solid gold"
+      : index === 1
+      ? "2px solid silver"
+      : "1px solid #cd7f32",
 
-                      {player.nombre}
+    boxShadow:
+      index === 0
+      ? "0 0 30px rgba(255,215,0,.5)"
+      : index === 1
+      ? "0 0 25px rgba(200,200,200,.4)"
+      : "0 0 20px rgba(205,127,50,.4)"
+  }}
+>
 
-                    </div>
+              <h2
+  style={{
+    fontSize: "28px",
 
-                  )
-                )}
+    letterSpacing: "2px",
 
-              </div>
+    marginBottom: "20px"
+  }}
+>
 
-            );
+                {medal}
 
-          }
-        )}
+                {" "}
 
-    </div>
+                {index + 1}° PUESTO
 
-  );
+              </h2>
+
+              {groupedRanking[
+                score
+              ].map(
+                player => (
+
+                  <div
+                    key={
+                      player.id
+                    }
+                    style={{
+  fontSize: "35px",
+
+  fontWeight: "bold",
+
+  marginBottom: "20px",
+
+}}
+                  >
+
+
+                    {player.icono}
+
+                    {" "}
+
+                    {player.nombre}
+
+                  </div>
+
+                )
+              )}
+
+            </div>
+
+          );
+
+        }
+      )}
+
+  </div>
+
+);
+
+
 
 }
 ////////
@@ -518,50 +586,90 @@ if (
 
   return (
 
+  <div
+    style={{
+      minHeight: "100vh",
+
+      background:
+        "radial-gradient(circle,#1e40af,#020617 70%)",
+
+      display: "flex",
+      flexDirection: "column",
+
+      justifyContent: "center",
+      alignItems: "center",
+
+      color: "white",
+
+      textAlign: "center"
+    }}
+  >
+
     <div
-      style={{
-        textAlign: "center",
-        paddingTop: "100px"
-      }}
-    >
+  style={{
+    fontSize: "120px",
+    marginBottom: "25px",
 
-      <h1
-        style={{
-          fontSize: "70px"
-        }}
-      >
-        🎉🏆🎉
-      </h1>
-<br />
-      <h1
-        style={{
-          fontSize: "50px"
-        }}
-      >
+    textShadow: `
+      0 0 20px gold,
+      0 0 40px gold,
+      0 0 80px gold
+    `
+  }}
+>
+  🏆
+</div>
+<br /><br /><br /><br />
+<div
+  style={{
+    fontSize: "90px",
 
-        {winner.icono}
+    marginBottom: "25px",
 
-      </h1>
+    animation:
+      "winnerPulse 1.2s infinite"
+  }}
+>
+  {winner.icono}
+</div>
+<br /><br /><br />
+<h1
+  style={{
+    fontSize: "70px",
 
-      <h1>
+    marginTop: "0px",
+    marginBottom: "30px",
 
-        {winner.nombre}
+    color: "#38bdf8",
 
-      </h1>
+    textShadow:
+      "0 0 20px #38bdf8"
+  }}
+>
+  {winner.nombre}
+</h1>
+<br /><br />
+<h2
+  style={{
+    fontSize: "36px",
 
-      <h2>
+    marginTop: "0px",
 
-        HA GANADO LA CARRERA
+    letterSpacing: "3px",
 
-      </h2>
+    color: "#e2e8f0"
+  }}
+>
+  HA GANADO LA CARRERA
+</h2>
+<br /><br />
+  </div>
 
-    </div>
-
-  );
+);
 
 }
 ///////////////////////////////////////////
-
+//PANTALLA DE EXPLICACION
 //////////////////////////
 if (
   raceStarted &&
@@ -571,46 +679,93 @@ if (
 
   return (
 
+  <div
+    style={{
+      minHeight: "100vh",
+
+      background:
+        "radial-gradient(circle,#1e3a8a,#020617)",
+
+      display: "flex",
+
+      justifyContent: "center",
+      alignItems: "center",
+
+      padding: "30px"
+    }}
+  >
+
     <div
       style={{
-        padding: 40,
-        textAlign: "center"
+        maxWidth: "900px",
+
+        background:
+          "rgba(255,255,255,0.05)",
+
+        border:
+          "2px solid #38bdf8",
+
+        borderRadius: "30px",
+
+        padding: "50px",
+
+        textAlign: "center",
+
+        color: "white",
+
+        boxShadow:
+          "0 0 40px rgba(56,189,248,.4)"
       }}
     >
 
+      <div
+        style={{
+          fontSize: "80px"
+        }}
+      >
+        💡
+      </div>
+
+<br />
+
       <h1>
-        💡 DATO DE CIBERSEGURIDAD
+        DATO DE CIBERSEGURIDAD
       </h1>
 
       <br />
 
       <h2>
-
-        Respuesta correcta:
-
+        Respuesta correcta
       </h2>
 
-      <h1>
+      <h1
+        style={{
+          color: "#38bdf8",
 
+          textShadow:
+            "0 0 15px #38bdf8"
+        }}
+      >
         {explanationData.respuestaCorrecta}
-
       </h1>
 
       <br />
 
       <p
         style={{
-          fontSize: "24px"
+          fontSize: "26px",
+
+          lineHeight: "1.6"
         }}
       >
-
         {explanationData.explicacion}
-
       </p>
 
     </div>
 
-  );
+  </div>
+
+);
 
 }
 
