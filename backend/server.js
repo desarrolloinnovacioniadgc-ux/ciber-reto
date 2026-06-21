@@ -501,6 +501,10 @@ io.on("connection", (socket) => {
 
       if (todosRespondieron) {
 
+        console.log(
+  "VERSION NUEVA ACTIVA"
+);
+
         clearTimeout(
           sala.timerPregunta
         );
