@@ -154,6 +154,12 @@ const CAR_COLORS = [
   "raceUpdate",
   (playersList) => {
 
+    setRacePlayers(
+      JSON.parse(
+        JSON.stringify(playersList)
+      )
+    );
+
     setPendingPlayers(
       JSON.parse(
         JSON.stringify(playersList)
@@ -1268,7 +1274,7 @@ timeLeft <= 5
   
 
   const playerIndex =
-  racePlayers.findIndex(
+  displayPlayers.findIndex(
     p => p.id === player.id
   );
 
