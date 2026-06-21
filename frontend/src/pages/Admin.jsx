@@ -66,11 +66,6 @@ const CAR_COLORS = [
   const [racePlayers, setRacePlayers] =
     useState([]);
 
-  //const [displayPlayers, setDisplayPlayers] = useState([]);
-
-  //const [pendingPlayers, setPendingPlayers] =
-  useState([]);
-
   const [allAnswered, setAllAnswered] =
     useState(false);
 
@@ -138,10 +133,6 @@ const CAR_COLORS = [
     );
 
     setPlayers(
-      playersList
-    );
-
-    setDisplayPlayers(
       playersList
     );
 
@@ -267,10 +258,6 @@ socket.on(
       socket.off(
         "raceUpdate"
       );
-
-      socket.off(
-  "animateRace"
-);
 
       socket.off(
         "allPlayersAnswered"
@@ -1245,7 +1232,7 @@ timeLeft <= 5
       {raceStarted && racePlayers.map((player) => {
 
   const playerIndex =
-  displayPlayers.findIndex(
+  racePlayers.findIndex(
     p => p.id === player.id
   );
 
