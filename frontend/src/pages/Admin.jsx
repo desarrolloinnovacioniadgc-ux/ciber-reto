@@ -68,6 +68,9 @@ const CAR_COLORS = [
 
   const [displayPlayers, setDisplayPlayers] = useState([]);
 
+  const [pendingPlayers, setPendingPlayers] =
+  useState([]);
+
   const [allAnswered, setAllAnswered] =
     useState(false);
 
@@ -148,27 +151,32 @@ const CAR_COLORS = [
     // Actualización carrera
 
     socket.on(
-      "raceUpdate",
-      (playersList) => {
+  "raceUpdate",
+  (playersList) => {
 
-        setRacePlayers(
-          playersList
-        );
-
-      }
+    setPendingPlayers(
+      JSON.parse(
+        JSON.stringify(playersList)
+      )
     );
+
+  }
+);
 
     socket.on(
   "animateRace",
-  (playersList) => {
+  () => {
 
     console.log(
-      "ANIMATE RACE",
-      playersList
+      "ANIMATE RACE"
     );
 
     setDisplayPlayers(
-      playersList
+      JSON.parse(
+        JSON.stringify(
+          pendingPlayers
+        )
+      )
     );
 
   }
