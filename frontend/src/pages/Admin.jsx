@@ -66,6 +66,8 @@ const CAR_COLORS = [
   const [racePlayers, setRacePlayers] =
     useState([]);
 
+  const [displayPlayers, setDisplayPlayers] = useState([]);
+
   const [allAnswered, setAllAnswered] =
     useState(false);
 
@@ -124,20 +126,24 @@ const CAR_COLORS = [
     // Lista jugadores
 
     socket.on(
-      "playersUpdated",
-      (playersList) => {
+  "playersUpdated",
+  (playersList) => {
 
-        console.log(
-          "Jugadores:",
-          playersList
-        );
-
-        setPlayers(
-          playersList
-        );
-
-      }
+    console.log(
+      "Jugadores:",
+      playersList
     );
+
+    setPlayers(
+      playersList
+    );
+
+    setDisplayPlayers(
+      playersList
+    );
+
+  }
+);
 
     // Actualización carrera
 
@@ -145,17 +151,28 @@ const CAR_COLORS = [
       "raceUpdate",
       (playersList) => {
 
-        console.log(
-          "Race update:",
-          playersList
-        );
-
         setRacePlayers(
           playersList
         );
 
       }
     );
+
+    socket.on(
+  "animateRace",
+  (playersList) => {
+
+    console.log(
+      "ANIMATE RACE",
+      playersList
+    );
+
+    setDisplayPlayers(
+      playersList
+    );
+
+  }
+);
 
     // Todos respondieron
 
@@ -264,6 +281,10 @@ socket.on(
       socket.off(
         "raceUpdate"
       );
+
+      socket.off(
+  "animateRace"
+);
 
       socket.off(
         "allPlayersAnswered"
@@ -1235,7 +1256,7 @@ timeLeft <= 5
 </>
 )}
 
-      {raceStarted && racePlayers.map((player) => {
+      {raceStarted && displayPlayers.map((player) => {
   
 
   const playerIndex =

@@ -87,11 +87,11 @@ function enviarPregunta(
   }
 
   if (
-  sala.estado ===
-  "finalizado"
-) {
-  return;
-}
+    sala.estado ===
+    "finalizado"
+  ) {
+    return;
+  }
 
   const pregunta =
     obtenerPreguntaAleatoria(
@@ -122,88 +122,88 @@ function enviarPregunta(
   );
 
   io.to(roomCode).emit(
-  "raceUpdate",
-  sala.jugadores
-);
-
-  sala.jugadores.forEach(
-  jugador => {
-
-    if (
-      jugador.inmuneBloqueo &&
-      !jugador.bloqueado
-    ) {
-
-      jugador.inmuneBloqueo =
-        false;
-
-    }
-
-  }
-);
-
-sala.jugadores.forEach(
-  jugador => {
-
-    const socketJugador =
-      io.sockets.sockets.get(
-        jugador.id
-      );
-
-    if (!socketJugador) {
-      return;
-    }
-
-    // Jugador bloqueado
-
-if (
-  jugador.bloqueado
-) {
-
-  // Cuenta como si ya hubiera respondido
-  jugador.respondio =
-    true;
-
-  socketJugador.emit(
-    "blockedRound"
+    "raceUpdate",
+    sala.jugadores
   );
 
-  jugador.bloqueado =
-    false;
+  sala.jugadores.forEach(
+    jugador => {
 
-  return;
-}
+      if (
+        jugador.inmuneBloqueo &&
+        !jugador.bloqueado
+      ) {
 
-const opcionesMezcladas =
-  [...pregunta.opciones]
-    .sort(
-      () =>
-        Math.random() - 0.5
-    );
-    // Enviar pregunta
+        jugador.inmuneBloqueo =
+          false;
 
-    socketJugador.emit(
-  "newQuestion",
-  {
-    pregunta:
-      pregunta.pregunta,
+      }
 
-    opciones:
-      opcionesMezcladas,
+    }
+  );
 
-    tiempo: 15
-  }
-);
-  }
-);
+  sala.jugadores.forEach(
+    jugador => {
 
-    io.to(roomCode).emit(
-  "questionStarted",
-  {
-    pregunta: pregunta.pregunta,
-    tiempo: 15
-  }
-);
+      const socketJugador =
+        io.sockets.sockets.get(
+          jugador.id
+        );
+
+      if (!socketJugador) {
+        return;
+      }
+
+      // Jugador bloqueado
+
+      if (
+        jugador.bloqueado
+      ) {
+
+        // Cuenta como si ya hubiera respondido
+        jugador.respondio =
+          true;
+
+        socketJugador.emit(
+          "blockedRound"
+        );
+
+        jugador.bloqueado =
+          false;
+
+        return;
+      }
+
+      const opcionesMezcladas =
+        [...pregunta.opciones]
+          .sort(
+            () =>
+              Math.random() - 0.5
+          );
+      // Enviar pregunta
+
+      socketJugador.emit(
+        "newQuestion",
+        {
+          pregunta:
+            pregunta.pregunta,
+
+          opciones:
+            opcionesMezcladas,
+
+          tiempo: 15
+        }
+      );
+    }
+  );
+
+  io.to(roomCode).emit(
+    "questionStarted",
+    {
+      pregunta: pregunta.pregunta,
+      tiempo: 15
+    }
+  );
 
 
   sala.timerPregunta =
@@ -221,26 +221,26 @@ const opcionesMezcladas =
       );
 
       sala.timerExplicacion =
-  setTimeout(() => {
+        setTimeout(() => {
 
-    if (
-      sala.estado ===
-      "finalizado"
-    ) {
+          if (
+            sala.estado ===
+            "finalizado"
+          ) {
 
-      io.to(roomCode).emit(
-        "raceFinished",
-        sala.rankingFinal
-      );
+            io.to(roomCode).emit(
+              "raceFinished",
+              sala.rankingFinal
+            );
 
-      return;
-    }
+            return;
+          }
 
-    enviarPregunta(
-      roomCode
-    );
+          enviarPregunta(
+            roomCode
+          );
 
-  }, 6000);  // ← Tiempo que dura la explicación
+        }, 6000);  // ← Tiempo que dura la explicación
 
     }, 15000);  // ← Tiempo para responder la pregunta
 
@@ -253,321 +253,377 @@ const opcionesMezcladas =
 io.on("connection", (socket) => {
 
   socket.on(
-  "leaveRoom",
-  (roomCode) => {
+    "leaveRoom",
+    (roomCode) => {
 
-    const sala = salas[roomCode];
+      const sala = salas[roomCode];
 
-    if (!sala) return;
+      if (!sala) return;
 
-    sala.jugadores =
-      sala.jugadores.filter(
-        p => p.id !== socket.id
-      );
+      sala.jugadores =
+        sala.jugadores.filter(
+          p => p.id !== socket.id
+        );
 
       console.log(
-  "Jugadores después:",
-  sala.jugadores.length
-);
+        "Jugadores después:",
+        sala.jugadores.length
+      );
 
-    socket.leave(roomCode);
-
-    io.to(roomCode).emit(
-      "playersUpdated",
-      sala.jugadores
-    );
-
-    io.to(roomCode).emit(
-  "raceUpdate",
-  sala.jugadores
-);
-
-  }
-);
-
-  socket.on(
-  "resetRace",
-  (roomCode) => {
-
-    console.log("RESET RECIBIDO");
-    
-    const sala = salas[roomCode];
-
-    if (!sala) return;
-
-    console.log(
-  "Jugadores antes:",
-  sala.jugadores.length
-);
-
-    clearTimeout(sala.timerPregunta);
-clearTimeout(sala.timerExplicacion);
-
-sala.estado = "esperando";
-
-sala.preguntaActual = null;
-
-sala.preguntasUsadas = [];
-
-sala.rankingFinal = null;
-
-// ELIMINAR TODOS LOS JUGADORES
-sala.jugadores = [];
-
-io.to(roomCode).emit(
-  "playersUpdated",
-  []
-);
-
-io.to(roomCode).emit(
-  "raceUpdate",
-  []
-);
-
-io.to(roomCode).emit(
-  "raceReset"
-);
-
-  }
-); 
-
-socket.on(
-  "answerQuestion",
-  ({
-    roomCode,
-    answer
-  }) => {
-
-    const sala =
-      salas[roomCode];
-
-    if (!sala) {
-      return;
-    }
-
-    const pregunta =
-      sala.preguntaActual;
-
-    if (!pregunta) {
-      return;
-    }
-
-////////////////////////
-    // Buscar jugador
-////////////////////////
-    const jugador =
-  sala.jugadores.find(
-    p =>
-      p.id === socket.id
-  );
-
-if (!jugador) {
-  return;
-}
-
-// Evitar respuestas múltiples
-
-if (jugador.respondio) {
-
-  console.log(
-    jugador.nombre,
-    "intentó responder dos veces"
-  );
-
-  return;
-}
-
-jugador.respondio = true;
-
-io.to(roomCode).emit(
-  "raceUpdate",
-  sala.jugadores
-);
-
-const todosRespondieron =
-  sala.jugadores.every(
-    jugador =>
-      jugador.respondio
-  );
-
-if (todosRespondieron) {
-
-  clearTimeout(
-    sala.timerPregunta
-  );
-
-  clearTimeout(
-    sala.timerExplicacion
-  );
-
-  io.to(roomCode).emit(
-    "allPlayersAnswered"
-  );
-
-  io.to(roomCode).emit(
-    "showExplanation",
-    {
-      respuestaCorrecta:
-        pregunta.correcta,
-
-      explicacion:
-        pregunta.explicacion
-    }
-  );
-
-  sala.timerExplicacion =
-  setTimeout(() => {
-
-    if (
-      sala.estado ===
-      "finalizado"
-    ) {
+      socket.leave(roomCode);
 
       io.to(roomCode).emit(
-        "raceFinished",
-        sala.rankingFinal
+        "playersUpdated",
+        sala.jugadores
       );
 
-      return;
+      io.to(roomCode).emit(
+        "raceUpdate",
+        sala.jugadores
+      );
+
     }
+  );
 
-    enviarPregunta(
-      roomCode
-    );
+  socket.on(
+    "resetRace",
+    (roomCode) => {
 
-  }, 6000);
+      console.log("RESET RECIBIDO");
 
-}
+      const sala = salas[roomCode];
 
-const correcta =
-  answer ===
-  pregunta.correcta;
+      if (!sala) return;
 
-
-
-
-if (jugador.turboActivo) {
-
-  jugador.turboDisponible =
-    false;
-
-  jugador.turboActivo =
-    false;
-
-  if (correcta) {
-
-    jugador.posicion += 2;
-
-    console.log(
-      jugador.nombre,
-      "usó TURBO y avanzó +2"
-    );
-
-  } else {
-
-    jugador.posicion =
-      Math.max(
-        0,
-        jugador.posicion - 1
+      console.log(
+        "Jugadores antes:",
+        sala.jugadores.length
       );
 
-    console.log(
-      jugador.nombre,
-      "falló TURBO y retrocedió -1"
-    );
+      clearTimeout(sala.timerPregunta);
+      clearTimeout(sala.timerExplicacion);
 
-  }
+      sala.estado = "esperando";
 
-} else {
+      sala.preguntaActual = null;
 
-  if (correcta) {
+      sala.preguntasUsadas = [];
 
-    jugador.posicion++;
+      sala.rankingFinal = null;
 
-  }
+      // ELIMINAR TODOS LOS JUGADORES
+      sala.jugadores = [];
 
-}
-
-if (jugador.posicion >= 8) {
-
-  sala.estado =
-    "finalizado";
-
-  sala.rankingFinal =
-    [...sala.jugadores]
-      .sort(
-        (a,b) =>
-          b.posicion - a.posicion
+      io.to(roomCode).emit(
+        "playersUpdated",
+        []
       );
 
-}
+      io.to(roomCode).emit(
+        "raceUpdate",
+        []
+      );
 
-    io.to(roomCode).emit(
-  "raceUpdate",
-  sala.jugadores
+      io.to(roomCode).emit(
+        "raceReset"
+      );
+
+    }
+  );
+
+  socket.on(
+    "answerQuestion",
+    ({
+      roomCode,
+      answer
+    }) => {
+
+      console.log(
+  "ENTRO A ANSWERQUESTION"
 );
 
-    socket.emit(
-      "answerResult",
-      {
-        correcta,
+      const sala =
+        salas[roomCode];
 
-        respuestaCorrecta:
-          pregunta.correcta,
-
-        explicacion:
-          pregunta.explicacion
+      if (!sala) {
+        return;
       }
-    );
 
-  }
-);
+      const pregunta =
+        sala.preguntaActual;
 
-socket.on(
-  "startRace",
-  (roomCode) => {
+      if (!pregunta) {
+        return;
+      }
 
-    if (!salas[roomCode]) {
-      return;
+      ////////////////////////
+      // Buscar jugador
+      ////////////////////////
+
+      const jugador =
+        sala.jugadores.find(
+          p =>
+            p.id === socket.id
+        );
+
+      if (!jugador) {
+        return;
+      }
+
+      // Evitar respuestas múltiples
+
+      if (jugador.respondio) {
+
+        console.log(
+          jugador.nombre,
+          "intentó responder dos veces"
+        );
+
+        return;
+      }
+
+      jugador.respondio = true;
+
+      // Actualizar quién respondió
+      io.to(roomCode).emit(
+        "raceUpdate",
+        sala.jugadores
+      );
+
+      const correcta =
+        answer ===
+        pregunta.correcta;
+
+      ////////////////////////
+      // TURBO
+      ////////////////////////
+
+      if (jugador.turboActivo) {
+
+        jugador.turboDisponible =
+          false;
+
+        jugador.turboActivo =
+          false;
+
+        if (correcta) {
+
+          jugador.posicion += 2;
+
+          console.log(
+            jugador.nombre,
+            "usó TURBO y avanzó +2"
+          );
+
+        } else {
+
+          jugador.posicion =
+            Math.max(
+              0,
+              jugador.posicion - 1
+            );
+
+          console.log(
+            jugador.nombre,
+            "falló TURBO y retrocedió -1"
+          );
+
+        }
+
+      } else {
+
+        if (correcta) {
+
+          jugador.posicion++;
+
+        }
+
+      }
+
+      ////////////////////////
+      // GANADOR
+      ////////////////////////
+
+      if (jugador.posicion >= 8) {
+
+        sala.estado =
+          "finalizado";
+
+        sala.rankingFinal =
+          [...sala.jugadores]
+            .sort(
+              (a, b) =>
+                b.posicion - a.posicion
+            );
+
+      }
+
+      ////////////////////////
+      // Resultado privado
+      ////////////////////////
+
+      socket.emit(
+        "answerResult",
+        {
+          correcta,
+
+          respuestaCorrecta:
+            pregunta.correcta,
+
+          explicacion:
+            pregunta.explicacion
+        }
+      );
+
+      ////////////////////////
+      // Todos respondieron
+      ////////////////////////
+      console.log(
+        "RESPONDIERON:",
+        sala.jugadores.map(
+          p => ({
+            nombre: p.nombre,
+            respondio: p.respondio
+          })
+        )
+      );
+
+      const todosRespondieron =
+        sala.jugadores.every(
+          jugador =>
+            jugador.respondio
+        );
+
+      console.log(
+        "TODOS RESPONDIERON?",
+        todosRespondieron
+      );
+
+      if (todosRespondieron) {
+
+        clearTimeout(
+          sala.timerPregunta
+        );
+
+        clearTimeout(
+          sala.timerExplicacion
+        );
+
+        io.to(roomCode).emit(
+          "allPlayersAnswered"
+        );
+
+        // Mostrar explicación
+
+        io.to(roomCode).emit(
+          "showExplanation",
+          {
+            respuestaCorrecta:
+              pregunta.correcta,
+
+            explicacion:
+              pregunta.explicacion
+          }
+        );
+
+        // 5 segundos explicación
+
+        setTimeout(() => {
+
+          // Avanzar autos
+
+          console.log(
+            "ENVIANDO ANIMATE RACE"
+          );
+
+          io.to(roomCode).emit(
+            "animateRace",
+            sala.jugadores
+          );
+
+          // 3 segundos animación
+
+          setTimeout(() => {
+
+            if (
+              sala.estado ===
+              "finalizado"
+            ) {
+
+              io.to(roomCode).emit(
+                "raceFinished",
+                sala.rankingFinal
+              );
+
+              return;
+            }
+
+            enviarPregunta(
+              roomCode
+            );
+
+          }, 3000);
+
+        }, 5000);
+
+      }
+
     }
+  );
 
-    salas[roomCode].estado =
-      "carrera";
 
-const sala = salas[roomCode];
+  ////
 
-clearTimeout(sala.timerPregunta);
-clearTimeout(sala.timerExplicacion);
+  socket.on(
+    "startRace",
+    (roomCode) => {
 
-sala.estado = "carrera";
+      if (!salas[roomCode]) {
+        return;
+      }
 
-sala.preguntasUsadas = [];
-sala.preguntaActual = null;
+      salas[roomCode].estado =
+        "carrera";
 
-sala.jugadores.forEach(jugador => {
+      const sala = salas[roomCode];
 
-  jugador.posicion = 0;
-  jugador.respondio = false;
+      clearTimeout(sala.timerPregunta);
+      clearTimeout(sala.timerExplicacion);
 
-  jugador.bloqueado = false;
-  jugador.inmuneBloqueo = false;
+      sala.estado = "carrera";
 
-  jugador.turboDisponible = true;
-  jugador.turboActivo = false;
+      sala.preguntasUsadas = [];
+      sala.preguntaActual = null;
 
-  jugador.bloqueoDisponible = true;
+      sala.jugadores.forEach(jugador => {
 
-});
+        jugador.posicion = 0;
+        jugador.respondio = false;
 
-io.to(roomCode).emit(
-  "raceUpdate",
-  sala.jugadores
-);
+        jugador.bloqueado = false;
+        jugador.inmuneBloqueo = false;
 
-enviarPregunta(roomCode);
+        jugador.turboDisponible = true;
+        jugador.turboActivo = false;
 
-  }
-);
+        jugador.bloqueoDisponible = true;
+
+      });
+
+      io.to(roomCode).emit(
+        "raceUpdate",
+        sala.jugadores
+      );
+
+      io.to(roomCode).emit(
+        "animateRace",
+        sala.jugadores
+      );
+
+      enviarPregunta(roomCode);
+
+    }
+  );
 
   console.log(
     "Nuevo socket:",
@@ -578,48 +634,48 @@ enviarPregunta(roomCode);
   // Crear sala - CreateRoom
   // ====================
 
-socket.on(
-  "createRoom",
-  () => {
+  socket.on(
+    "createRoom",
+    () => {
 
-    const roomCode =
-      "LOCAL";
+      const roomCode =
+        "LOCAL";
 
-    if (
-      !salas[roomCode]
-    ) {
+      if (
+        !salas[roomCode]
+      ) {
 
-      salas[roomCode] = {
+        salas[roomCode] = {
 
-        jugadores: [],
-        estado:
-          "esperando",
+          jugadores: [],
+          estado:
+            "esperando",
 
-        preguntasUsadas: [],
-        preguntaActual:
-          null,
+          preguntasUsadas: [],
+          preguntaActual:
+            null,
 
-        timerPregunta:
-          null,
+          timerPregunta:
+            null,
 
-        timerExplicacion:
-          null
+          timerExplicacion:
+            null
 
-      };
+        };
+
+      }
+
+      socket.join(
+        roomCode
+      );
+
+      socket.emit(
+        "roomCreated",
+        roomCode
+      );
 
     }
-
-    socket.join(
-      roomCode
-    );
-
-    socket.emit(
-      "roomCreated",
-      roomCode
-    );
-
-  }
-);
+  );
 
   // ====================
   // Obtener iconos usados
@@ -676,23 +732,23 @@ socket.on(
         return;
       }
 
-salas[roomCode]
-  .jugadores.push({
-  id: socket.id,
-  nombre: playerName,
-  icono: icon,
-  posicion: 0,
-  respondio: false,
+      salas[roomCode]
+        .jugadores.push({
+          id: socket.id,
+          nombre: playerName,
+          icono: icon,
+          posicion: 0,
+          respondio: false,
 
-bloqueado: false,
-inmuneBloqueo: false,
-bloqueosConsecutivos: 0,
+          bloqueado: false,
+          inmuneBloqueo: false,
+          bloqueosConsecutivos: 0,
 
-turboDisponible: true,
-turboActivo: false,
+          turboDisponible: true,
+          turboActivo: false,
 
-bloqueoDisponible: true
-});
+          bloqueoDisponible: true
+        });
 
       socket.join(roomCode);
 
@@ -750,120 +806,120 @@ bloqueoDisponible: true
   //Activar turbo 
   ////////////////////
   socket.on(
-  "activateTurbo",
-  (roomCode) => {
+    "activateTurbo",
+    (roomCode) => {
 
-    const sala =
-      salas[roomCode];
+      const sala =
+        salas[roomCode];
 
-    if (!sala) {
-      return;
-    }
+      if (!sala) {
+        return;
+      }
 
-    const jugador =
-      sala.jugadores.find(
-        p =>
-          p.id === socket.id
-      );
+      const jugador =
+        sala.jugadores.find(
+          p =>
+            p.id === socket.id
+        );
 
-    if (!jugador) {
-      return;
-    }
+      if (!jugador) {
+        return;
+      }
 
-    if (
-      !jugador.turboDisponible
-    ) {
-      return;
-    }
+      if (
+        !jugador.turboDisponible
+      ) {
+        return;
+      }
 
-    jugador.turboActivo =
-      true;
+      jugador.turboActivo =
+        true;
 
       io.to(roomCode).emit(
-  "raceUpdate",
-  sala.jugadores
-);
-
-    console.log(
-      jugador.nombre,
-      "activó TURBO"
-    );
-
-  }
-);
-
-socket.on(
-  "useBlock",
-  ({
-    roomCode,
-    targetId
-  }) => {
-
-    const sala =
-      salas[roomCode];
-
-    if (!sala) {
-      return;
-    }
-
-    const atacante =
-      sala.jugadores.find(
-        p =>
-          p.id === socket.id
+        "raceUpdate",
+        sala.jugadores
       );
 
-    if (
-      !atacante ||
-      !atacante.bloqueoDisponible
-    ) {
-      return;
-    }
-
-    const objetivo =
-      sala.jugadores.find(
-        p =>
-          p.id === targetId
+      console.log(
+        jugador.nombre,
+        "activó TURBO"
       );
 
-    if (!objetivo) {
-      return;
     }
-
-    if (
-  objetivo.inmuneBloqueo
-) {
-
-  console.log(
-    objetivo.nombre,
-    "es inmune al bloqueo"
   );
 
-  return;
+  socket.on(
+    "useBlock",
+    ({
+      roomCode,
+      targetId
+    }) => {
 
-}
+      const sala =
+        salas[roomCode];
 
-    atacante.bloqueoDisponible =
-      false;
+      if (!sala) {
+        return;
+      }
 
-    objetivo.bloqueado =
-    true;
+      const atacante =
+        sala.jugadores.find(
+          p =>
+            p.id === socket.id
+        );
 
-    objetivo.inmuneBloqueo =
-    true;
+      if (
+        !atacante ||
+        !atacante.bloqueoDisponible
+      ) {
+        return;
+      }
 
-    console.log(
-      atacante.nombre,
-      "bloqueó a",
-      objetivo.nombre
-    );
+      const objetivo =
+        sala.jugadores.find(
+          p =>
+            p.id === targetId
+        );
 
-    io.to(roomCode).emit(
-      "raceUpdate",
-      sala.jugadores
-    );
+      if (!objetivo) {
+        return;
+      }
 
-  }
-);
+      if (
+        objetivo.inmuneBloqueo
+      ) {
+
+        console.log(
+          objetivo.nombre,
+          "es inmune al bloqueo"
+        );
+
+        return;
+
+      }
+
+      atacante.bloqueoDisponible =
+        false;
+
+      objetivo.bloqueado =
+        true;
+
+      objetivo.inmuneBloqueo =
+        true;
+
+      console.log(
+        atacante.nombre,
+        "bloqueó a",
+        objetivo.nombre
+      );
+
+      io.to(roomCode).emit(
+        "raceUpdate",
+        sala.jugadores
+      );
+
+    }
+  );
 });
 
 // ====================
@@ -873,6 +929,8 @@ socket.on(
 server.listen(
   3000,
   () => {
+
+    console.log("=== VERSION FRANCO TEST ===");
 
     console.log(
       "Servidor iniciado en puerto 3000"

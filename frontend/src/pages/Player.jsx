@@ -609,6 +609,8 @@ export default function Player() {
             🚫
           </h1>
 
+<br />
+
           <h1>
 
             Hackeado
@@ -655,67 +657,33 @@ export default function Player() {
         <div style={cardStyle}>
 
           <h1
-            style={{
-              fontSize: "60px"
-            }}
-          >
+  style={{
+    fontSize: "60px"
+  }}
+>
+  🎯
+</h1>
 
-            {result.correcta
-              ? "✔️"
-              : "❌"}
+<br />
 
-          </h1>
+<h1>
+  RESPUESTA ENVIADA
+</h1>
 
-          <h1>
+<p
+  style={{
+    fontSize: "22px"
+  }}
+>
+  Observa la pantalla principal
+  para descubrir el resultado.
+</p>
 
-            {result.correcta
-              ? "Correcto"
-              : "Incorrecto"}
+<br />
 
-          </h1>
-
-          {!result.correcta && (
-
-            <>
-
-              <br />
-
-              <h2>
-
-                Respuesta correcta
-
-              </h2>
-
-              <h1>
-
-                {result.respuestaCorrecta}
-
-              </h1>
-
-            </>
-
-          )}
-
-          <br />
-
-          <p
-            style={{
-              fontSize: "20px"
-            }}
-          >
-
-            {result.explicacion}
-
-          </p>
-
-          <br />
-
-          <h3>
-
-            Esperando siguiente
-            pregunta...
-
-          </h3>
+<h3>
+  Esperando siguiente pregunta...
+</h3>
 
           <hr />
 
@@ -789,71 +757,140 @@ export default function Player() {
 
           {showBlockMenu && (
 
-            <>
+<div
+  style={{
+    position: "fixed",
 
-              <br />
+    top: 0,
+    left: 0,
 
-              <h3>
+    width: "100%",
+    height: "100%",
 
-                Selecciona rival
+    background:
+      "rgba(0,0,0,0.8)",
 
-              </h3>
+    display: "flex",
 
-              <br />
+    justifyContent: "center",
 
-              {
+    alignItems: "center",
 
-                players
+    zIndex: 9999
+  }}
+>
 
-                  .filter(
-                    p =>
-                      p.id !==
-                      socket.id
-                  )
+<div
+  style={{
+    width: "90%",
+    maxWidth: "420px",
 
-                  .map(
-                    player => (
+    background:
+      "#0f172a",
 
-                      <div
-                        key={player.id}
-                      >
+    border:
+      "2px solid rgba(56,189,248,.4)",
 
-                        <button
+    borderRadius: "25px",
 
-                          style={{
-                            ...answerButtonStyle,
-                            minHeight: "60px"
-                          }}
+    padding: "25px",
 
-                          onClick={() =>
-                            blockPlayer(
-                              player.id
-                            )
-                          }
+    boxShadow:
+      "0 0 30px rgba(56,189,248,.3)"
+  }}
+>
 
-                        >
+<h2
+  style={{
+    marginBottom: "20px"
+  }}
+>
+  🎯 Selecciona un rival
+</h2>
 
-                          {player.icono}
+{
+  players
 
-                          {" "}
+    .filter(
+      p =>
+        p.id !==
+        socket.id
+    )
 
-                          {player.nombre}
+    .map(
+      player => (
 
-                        </button>
+        <button
 
-                        <br />
-                        <br />
+          key={player.id}
 
-                      </div>
+          style={{
+            ...answerButtonStyle,
 
-                    )
-                  )
+            minHeight: "60px",
 
-              }
+            marginBottom: "12px"
+          }}
 
-            </>
+          onClick={() =>
+            blockPlayer(
+              player.id
+            )
+          }
 
-          )}
+        >
+
+          {player.icono}
+
+          {" "}
+
+          {player.nombre}
+
+        </button>
+
+      )
+    )
+}
+
+<button
+
+  onClick={() =>
+    setShowBlockMenu(
+      false
+    )
+  }
+
+  style={{
+    width: "100%",
+
+    height: "60px",
+
+    borderRadius: "15px",
+
+    border: "none",
+
+    background:
+      "#334155",
+
+    color: "white",
+
+    fontWeight: "bold",
+
+    marginTop: "10px",
+
+    cursor: "pointer"
+  }}
+>
+
+  Cancelar
+
+</button>
+
+</div>
+
+</div>
+
+)}
 
         </div>
 
