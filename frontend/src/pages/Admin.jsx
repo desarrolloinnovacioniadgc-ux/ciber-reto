@@ -66,9 +66,9 @@ const CAR_COLORS = [
   const [racePlayers, setRacePlayers] =
     useState([]);
 
-  const [displayPlayers, setDisplayPlayers] = useState([]);
+  //const [displayPlayers, setDisplayPlayers] = useState([]);
 
-  const [pendingPlayers, setPendingPlayers] =
+  //const [pendingPlayers, setPendingPlayers] =
   useState([]);
 
   const [allAnswered, setAllAnswered] =
@@ -154,39 +154,11 @@ const CAR_COLORS = [
   "raceUpdate",
   (playersList) => {
 
-    setRacePlayers(
-      JSON.parse(
-        JSON.stringify(playersList)
-      )
-    );
-
-    setPendingPlayers(
-      JSON.parse(
-        JSON.stringify(playersList)
-      )
-    );
+    setRacePlayers(playersList);
 
   }
 );
 
-    socket.on(
-  "animateRace",
-  () => {
-
-    console.log(
-      "ANIMATE RACE"
-    );
-
-    setDisplayPlayers(
-      JSON.parse(
-        JSON.stringify(
-          pendingPlayers
-        )
-      )
-    );
-
-  }
-);
 
     // Todos respondieron
 
@@ -1270,8 +1242,7 @@ timeLeft <= 5
 </>
 )}
 
-      {raceStarted && displayPlayers.map((player) => {
-  
+      {raceStarted && racePlayers.map((player) => {
 
   const playerIndex =
   displayPlayers.findIndex(
