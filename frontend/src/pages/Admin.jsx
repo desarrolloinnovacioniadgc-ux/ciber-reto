@@ -795,19 +795,10 @@ if (
 
 <br />
 
-<h3
-  style={{
-    color: "#94a3b8",
-    letterSpacing: "2px"
-  }}
->
-  ⏳ Preparando siguiente pregunta...
-</h3>
-
 <div
   style={{
     width: "100%",
-    height: "18px",
+    height: "14px",
     background: "rgba(255,255,255,0.08)",
     borderRadius: "20px",
     overflow: "hidden",
@@ -824,7 +815,7 @@ if (
         "linear-gradient(90deg,#2563eb,#38bdf8)",
 
       animation:
-        "loadingBar 5s linear"
+        "loadingBar 6s linear"
     }}
   />
 
