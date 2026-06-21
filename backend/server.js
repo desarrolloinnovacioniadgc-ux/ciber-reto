@@ -837,12 +837,9 @@ io.on("connection", (socket) => {
       }
 
       jugador.turboActivo =
-        true;
+  true;
 
-      io.to(roomCode).emit(
-        "raceUpdate",
-        sala.jugadores
-      );
+// NO actualizar la carrera todavía
 
       console.log(
         jugador.nombre,
@@ -915,11 +912,6 @@ io.on("connection", (socket) => {
         atacante.nombre,
         "bloqueó a",
         objetivo.nombre
-      );
-
-      io.to(roomCode).emit(
-        "raceUpdate",
-        sala.jugadores
       );
 
     }

@@ -372,6 +372,18 @@ useEffect(() => {
 
 }
 
+@keyframes loadingBar {
+
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
+  }
+
+}
+
   `;
   
 
@@ -779,6 +791,44 @@ if (
       >
         {explanationData.explicacion}
       </p>
+
+
+<br />
+
+<h3
+  style={{
+    color: "#94a3b8",
+    letterSpacing: "2px"
+  }}
+>
+  ⏳ Preparando siguiente pregunta...
+</h3>
+
+<div
+  style={{
+    width: "100%",
+    height: "18px",
+    background: "rgba(255,255,255,0.08)",
+    borderRadius: "20px",
+    overflow: "hidden",
+    marginTop: "25px"
+  }}
+>
+
+  <div
+    style={{
+      width: "100%",
+      height: "100%",
+
+      background:
+        "linear-gradient(90deg,#2563eb,#38bdf8)",
+
+      animation:
+        "loadingBar 5s linear"
+    }}
+  />
+
+</div>
 
     </div>
 
