@@ -4,12 +4,6 @@ import {
   useRef
 } from "react";
 
-import {
-  useState,
-  useEffect,
-  useRef
-} from "react";
-
 import Confetti from "react-confetti";
 
 import Fireworks from "react-canvas-confetti";
@@ -680,10 +674,12 @@ if (
     >
 
       <Confetti
-        recycle={true}
-        numberOfPieces={250}
-        gravity={0.25}
-      />
+  width={window.innerWidth}
+  height={window.innerHeight}
+  recycle={true}
+  numberOfPieces={350}
+  gravity={0.25}
+/>
 
       <motion.div
 
