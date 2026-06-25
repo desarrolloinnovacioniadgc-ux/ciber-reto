@@ -436,7 +436,7 @@ useEffect(() => {
     );
 
   raceMusicRef.current.loop = true;
-  raceMusicRef.current.volume = 0.20;
+  raceMusicRef.current.volume = 0.15;
 
 }, []);
 
