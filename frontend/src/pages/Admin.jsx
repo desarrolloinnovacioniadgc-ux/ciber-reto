@@ -11,7 +11,10 @@ export default function Admin() {
   // ====================
   // Estados
   // ====================
-const musicRef =
+const lobbyMusicRef =
+  useRef(null);
+
+const raceMusicRef =
   useRef(null);
 
 const [musicStarted,
@@ -37,6 +40,17 @@ const volverInicio = () => {
   setRacePlayers([]);
   setAllAnswered(false);
 
+  if (musicStarted) {
+
+  raceMusicRef.current.pause();
+
+  raceMusicRef.current.currentTime = 0;
+
+  lobbyMusicRef.current.currentTime = 0;
+
+  lobbyMusicRef.current.play();
+
+}
 };
 
   const CARS = [
@@ -171,6 +185,18 @@ const CAR_COLORS = [
 socket.on(
   "raceFinished",
   (ranking) => {
+
+    if (musicStarted) {
+
+  raceMusicRef.current.pause();
+
+  raceMusicRef.current.currentTime = 0;
+
+  lobbyMusicRef.current.currentTime = 0;
+
+  lobbyMusicRef.current.play();
+
+}
 
     setRaceStarted(false);
 
@@ -396,16 +422,21 @@ useEffect(() => {
 
 useEffect(() => {
 
-  musicRef.current =
+  lobbyMusicRef.current =
     new Audio(
       "/audio/Apex_Drift.mp3"
     );
 
-  musicRef.current.loop =
-    true;
+  lobbyMusicRef.current.loop = true;
+  lobbyMusicRef.current.volume = 0.30;
 
-  musicRef.current.volume =
-    0.10;
+  raceMusicRef.current =
+    new Audio(
+      "/audio/Carrera.mp3"
+    );
+
+  raceMusicRef.current.loop = true;
+  raceMusicRef.current.volume = 0.20;
 
 }, []);
 
@@ -1081,13 +1112,14 @@ position: "relative",
 
     if (!musicStarted) {
 
-      musicRef.current.play();
+      lobbyMusicRef.current.play();
 
       setMusicStarted(true);
 
     } else {
 
-      musicRef.current.pause();
+      lobbyMusicRef.current.pause();
+raceMusicRef.current.pause();
 
       setMusicStarted(false);
 
@@ -1135,6 +1167,16 @@ position: "relative",
     setShowWinner(false);
     setShowExplanation(false);
     setExplanationData(null);
+
+    if (musicStarted) {
+
+  lobbyMusicRef.current.pause();
+
+  raceMusicRef.current.currentTime = 0;
+
+  raceMusicRef.current.play();
+
+}
 
     socket.emit(
       "startRace",
