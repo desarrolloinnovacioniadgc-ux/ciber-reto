@@ -4,6 +4,20 @@ import {
   useRef
 } from "react";
 
+import {
+  useState,
+  useEffect,
+  useRef
+} from "react";
+
+import Confetti from "react-confetti";
+
+import Fireworks from "react-canvas-confetti";
+
+import {
+  motion
+} from "framer-motion";
+
 import { socket } from "../services/socket";
 
 export default function Admin() {
@@ -640,6 +654,7 @@ if (finalRanking) {
 
 }
 ////////
+//PANTALLA GANADOR
 /////////////////
 if (
   showWinner &&
@@ -648,86 +663,141 @@ if (
 
   return (
 
-  <div
-    style={{
-      minHeight: "100vh",
-
-      background:
-        "radial-gradient(circle,#1e40af,#020617 70%)",
-
-      display: "flex",
-      flexDirection: "column",
-
-      justifyContent: "center",
-      alignItems: "center",
-
-      color: "white",
-
-      textAlign: "center"
-    }}
-  >
-
     <div
-  style={{
-    fontSize: "120px",
-    marginBottom: "25px",
+      style={{
+        minHeight: "100vh",
+        background:
+          "radial-gradient(circle,#1e40af,#020617 70%)",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "white",
+        textAlign: "center",
+        overflow: "hidden",
+        position: "relative"
+      }}
+    >
 
-    textShadow: `
-      0 0 20px gold,
-      0 0 40px gold,
-      0 0 80px gold
-    `
-  }}
->
-  🏆
-</div>
-<br /><br /><br /><br />
-<div
-  style={{
-    fontSize: "90px",
+      <Confetti
+        recycle={true}
+        numberOfPieces={250}
+        gravity={0.25}
+      />
 
-    marginBottom: "25px",
+      <motion.div
 
-    animation:
-      "winnerPulse 1.2s infinite"
-  }}
->
-  {winner.icono}
-</div>
-<br /><br /><br />
-<h1
-  style={{
-    fontSize: "70px",
+        initial={{
+          scale:0,
+          rotate:-180
+        }}
 
-    marginTop: "0px",
-    marginBottom: "30px",
+        animate={{
+          scale:1,
+          rotate:0
+        }}
 
-    color: "#38bdf8",
+        transition={{
+          duration:0.8
+        }}
 
-    textShadow:
-      "0 0 20px #38bdf8"
-  }}
->
-  {winner.nombre}
-</h1>
-<br /><br />
-<h2
-  style={{
-    fontSize: "36px",
+        style={{
+          fontSize:"140px",
+          textShadow:
+            "0 0 40px gold"
+        }}
 
-    marginTop: "0px",
+      >
+        🏆
+      </motion.div>
 
-    letterSpacing: "3px",
+      <motion.div
 
-    color: "#e2e8f0"
-  }}
->
-  HA GANADO LA CARRERA
-</h2>
-<br /><br />
-  </div>
+        initial={{
+          y:120,
+          opacity:0
+        }}
 
-);
+        animate={{
+          y:0,
+          opacity:1
+        }}
+
+        transition={{
+          delay:0.4,
+          duration:0.7
+        }}
+
+        style={{
+          fontSize:"100px",
+          animation:
+            "winnerPulse 1.2s infinite"
+        }}
+
+      >
+
+        {winner.icono}
+
+      </motion.div>
+
+      <motion.h1
+
+        initial={{
+          opacity:0,
+          scale:0.5
+        }}
+
+        animate={{
+          opacity:1,
+          scale:1
+        }}
+
+        transition={{
+          delay:0.8
+        }}
+
+        style={{
+          fontSize:"72px",
+          color:"#38bdf8",
+          textShadow:
+            "0 0 25px #38bdf8"
+        }}
+
+      >
+
+        {winner.nombre}
+
+      </motion.h1>
+
+      <motion.h2
+
+        initial={{
+          opacity:0
+        }}
+
+        animate={{
+          opacity:1
+        }}
+
+        transition={{
+          delay:1.1
+        }}
+
+        style={{
+          fontSize:"34px",
+          letterSpacing:"4px",
+          color:"#e2e8f0"
+        }}
+
+      >
+
+        HA GANADO LA CARRERA
+
+      </motion.h2>
+
+    </div>
+
+  );
 
 }
 ///////////////////////////////////////////
