@@ -675,8 +675,8 @@ export default function Player() {
     fontSize: "22px"
   }}
 >
-  Observa la pantalla principal
-  para descubrir el resultado.
+  Mira la pantalla principal 
+  para ver el resultado.
 </p>
 
 <br />

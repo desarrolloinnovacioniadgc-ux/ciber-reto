@@ -724,32 +724,34 @@ if (
       <br />
 
       <h2>
-        Respuesta correcta
-      </h2>
+  Respuesta correcta
+</h2>
 
-      <h1
-        style={{
-          color: "#38bdf8",
+<h1
+  style={{
+    color: "#38bdf8",
+    textShadow: "0 0 15px #38bdf8",
+    fontSize: "48px",
+    lineHeight: "1.2",
+    maxWidth: "1050px",
+    margin: "20px auto",
+    padding: "0 30px",
+    textAlign: "center"
+  }}
+>
+  {explanationData.respuestaCorrecta}
+</h1>
 
-          textShadow:
-            "0 0 15px #38bdf8"
-        }}
-      >
-        {explanationData.respuestaCorrecta}
-      </h1>
+<br />
 
-      <br />
-
-      <p
-        style={{
-          fontSize: "26px",
-
-          lineHeight: "1.6"
-        }}
-      >
-        {explanationData.explicacion}
-      </p>
-
+<p
+  style={{
+    fontSize: "26px",
+    lineHeight: "1.6"
+  }}
+>
+  {explanationData.explicacion}
+</p>
 
 <br />
 
