@@ -734,12 +734,9 @@ if (
     margin: "25px auto",
     color: "#38bdf8",
     fontSize: "34px",
-    fontFamily: "Arial, sans-serif",
     fontWeight: "bold",
-    lineHeight: "1.6",
-    textAlign: "center",
-    whiteSpace: "normal",
-    overflowWrap: "break-word"
+    lineHeight: "55px",
+    textAlign: "center"
   }}
 >
   {explanationData.respuestaCorrecta}
