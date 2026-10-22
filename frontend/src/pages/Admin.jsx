@@ -727,24 +727,20 @@ if (
   Respuesta correcta
 </h2>
 
-<div
+<h2
   style={{
     color: "#38bdf8",
     textShadow: "0 0 15px #38bdf8",
     fontSize: "38px",
-    fontWeight: "600",
     lineHeight: "1.3",
-    width: "100%",
     maxWidth: "760px",
     margin: "20px auto",
     padding: "0 20px",
-    textAlign: "center",
-    whiteSpace: "normal",
-    overflowWrap: "break-word"
+    textAlign: "center"
   }}
 >
   {explanationData.respuestaCorrecta}
-</div>
+</h2>
 
 <br />
 
