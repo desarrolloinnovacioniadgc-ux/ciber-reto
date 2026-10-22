@@ -718,27 +718,41 @@ if (
 <br />
 
       <h1>
-        DATO DE CIBERSEGURIDAD
+        REPUESTA CORRECTA
       </h1>
 
       <br />
 
-      <h2>
-  Respuesta correcta
-</h2>
+
 
 <div
   style={{
+    width: "100%",
+    maxWidth: "760px",
+    margin: "25px auto",
+    padding: "22px 30px",
+
+    background:
+      "linear-gradient(135deg, rgba(56,189,248,0.12), rgba(37,99,235,0.08))",
+
+    border: "2px solid rgba(56,189,248,0.8)",
+    borderRadius: "18px",
+
+    boxShadow:
+      "0 0 20px rgba(56,189,248,0.25), inset 0 0 20px rgba(56,189,248,0.05)",
+
+    color: "#ffffff",
+
     fontSize: "40px",
-    color: "red",
-    background: "yellow",
-    padding: "20px",
-    margin: "20px auto",
-    width: "600px",
-    textAlign: "center"
+    fontWeight: "700",
+    lineHeight: "1.35",
+
+    textAlign: "center",
+
+    overflowWrap: "break-word"
   }}
 >
-  ESTA ES UNA PRUEBA
+  {explanationData.respuestaCorrecta}
 </div>
 
 <br />
