@@ -729,21 +729,17 @@ if (
 
 <div
   style={{
-    display: "block",
     width: "100%",
-    maxWidth: "700px",
-    margin: "20px auto",
-    padding: "0",
+    maxWidth: "720px",
+    margin: "25px auto",
     color: "#38bdf8",
-    fontSize: "36px",
+    fontSize: "34px",
     fontFamily: "Arial, sans-serif",
     fontWeight: "bold",
-    lineHeight: "1.5",
+    lineHeight: "1.6",
     textAlign: "center",
     whiteSpace: "normal",
-    overflowWrap: "break-word",
-    position: "relative",
-    zIndex: 10
+    overflowWrap: "break-word"
   }}
 >
   {explanationData.respuestaCorrecta}
