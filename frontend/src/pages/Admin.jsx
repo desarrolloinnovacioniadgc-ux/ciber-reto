@@ -731,9 +731,9 @@ if (
   style={{
     color: "#38bdf8",
     textShadow: "0 0 15px #38bdf8",
-    fontSize: "48px",
-    lineHeight: "1.4",
-    maxWidth: "1050px",
+    fontSize: "40px",
+    lineHeight: "1.25",
+    maxWidth: "1000px",
     margin: "20px auto",
     padding: "0 30px",
     textAlign: "center"
