@@ -729,17 +729,16 @@ if (
 
 <div
   style={{
-    width: "100%",
-    maxWidth: "720px",
-    margin: "25px auto",
-    color: "#38bdf8",
-    fontSize: "34px",
-    fontWeight: "bold",
-    lineHeight: "55px",
+    fontSize: "40px",
+    color: "red",
+    background: "yellow",
+    padding: "20px",
+    margin: "20px auto",
+    width: "600px",
     textAlign: "center"
   }}
 >
-  {explanationData.respuestaCorrecta}
+  ESTA ES UNA PRUEBA
 </div>
 
 <br />
