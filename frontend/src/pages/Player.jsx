@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { socket } from "../services/socket";
+import { motion } from "framer-motion";
 
 export default function Player() {
 
@@ -34,7 +35,7 @@ export default function Player() {
     useState("");
 
   const [selectedIcon, setSelectedIcon] =
-    useState("🐱");
+    useState("🧛");
 
   const [joined, setJoined] =
     useState(false);
@@ -117,7 +118,10 @@ export default function Player() {
     padding: "25px",
 
     boxShadow:
-      "0 0 25px rgba(56,189,248,0.25)"
+      "0 0 25px rgba(15, 39, 49, 0.25)",
+
+    position: "relative",
+    zIndex: 1
   };
 
   const answerButtonStyle = {
@@ -392,12 +396,12 @@ export default function Player() {
   // ====================
 
   const icons = [
-    "🐱",
-    "👿",
+    "🧛",
+    "🧟",
     "🤖",
-    "🦊",
-    "🐸",
-    "🦄"
+    "🎃",
+    "🧙",
+    "🦇"
   ];
 
 
@@ -661,7 +665,7 @@ export default function Player() {
     fontSize: "60px"
   }}
 >
-  🎯
+  👻
 </h1>
 
 <br />
@@ -1061,18 +1065,91 @@ if (joined) {
 
 return (
 
-  <div style={screenStyle}>
+  <div
+  style={{
+    ...screenStyle,
+    position: "relative",
+    overflow: "hidden"
+  }}
+>
+
+  {[
+  { top: "10%", size: 52, duration: 14, delay: 0, opacity: 0.16 },
+  { top: "25%", size: 40, duration: 11, delay: 3, opacity: 0.12 },
+  { top: "40%", size: 58, duration: 16, delay: 6, opacity: 0.14 },
+  { top: "58%", size: 44, duration: 12, delay: 1, opacity: 0.11 },
+  { top: "72%", size: 50, duration: 15, delay: 5, opacity: 0.13 },
+  { top: "85%", size: 38, duration: 10, delay: 8, opacity: 0.10 }
+].map((bat, index) => (
+  <motion.img
+    key={index}
+    src="/halloween/murcielago.png"
+    initial={{
+      x: "-10vw"
+    }}
+    animate={{
+      x: "110vw",
+      y: [0, -12, 8, -6, 0]
+    }}
+    transition={{
+      x: {
+        duration: bat.duration,
+        repeat: Infinity,
+        delay: bat.delay,
+        ease: "linear"
+      },
+      y: {
+        duration: 3,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }
+    }}
+    style={{
+      position: "absolute",
+      top: bat.top,
+      left: 0,
+      width: `${bat.size}px`,
+      opacity: bat.opacity,
+      pointerEvents: "none",
+      zIndex: 0
+    }}
+  />
+))}
 
     <div style={cardStyle}>
+      
 
-      <h1
-        style={{
-          fontSize: "55px",
-          marginBottom: "10px"
-        }}
-      >
-        CiberSeguro
-      </h1>
+      <motion.h1
+  style={{
+    fontSize: "55px",
+    marginBottom: "10px",
+    color: "#ff9d2e",
+    display: "flex",
+    justifyContent: "center",
+    letterSpacing: "4px",
+  }}
+>
+  {"CIBER RETO".split("").map((letra, index) => (
+    <motion.span
+      key={index}
+      animate={{
+        y: [0, -5, 0, 4, 0]
+      }}
+      transition={{
+        duration: 8,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: index * 0.18
+      }}
+      style={{
+        display: "inline-block",
+        whiteSpace: "pre"
+      }}
+    >
+      {letra}
+    </motion.span>
+  ))}
+</motion.h1>
 
       <br />
 

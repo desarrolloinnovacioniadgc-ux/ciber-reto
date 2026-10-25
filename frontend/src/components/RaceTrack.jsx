@@ -30,7 +30,9 @@ export default function RaceTrack({
                         fontWeight: "bold",
                         color: "#ffffff",
                         maxWidth: "1200px",
-                        margin: "0 auto"
+                        margin: "0 auto",
+                        textShadow:
+            "3px 3px 6px rgba(0,0,0,0.95), 0 0 12px rgba(0,0,0,0.8)"
                     }}
                 >
                     {currentQuestion}

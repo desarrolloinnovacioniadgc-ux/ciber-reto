@@ -712,7 +712,7 @@ if (
           fontSize: "80px"
         }}
       >
-        💡
+        🎃
       </div>
 
 <br />
@@ -813,14 +813,51 @@ return (
   width: "100vw",
   boxSizing: "border-box",
   background:
-"radial-gradient(circle at top,#1e40af,#020617 35%,#010409 90%)",
+"radial-gradient(circle at top,rgba(30,64,175,0.35),rgba(2,6,23,0.55) 35%,rgba(1,4,9,0.65) 90%)",
 overflow: "hidden",
 position: "relative",
+isolation: "isolate",
   color: "white",
   display: "flex",
   flexDirection: "column"
 }}
   >
+
+    <video
+  autoPlay
+  loop
+  muted
+  playsInline
+  style={{
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    zIndex: -2,
+    pointerEvents: "none"
+  }}
+>
+  <source
+    src="/halloween/halloween-bg.mp4"
+    type="video/mp4"
+  />
+</video>
+
+{raceStarted && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(2, 6, 23, 0.30)",
+      backdropFilter: "blur(5px)",
+      WebkitBackdropFilter: "blur(5px)",
+      zIndex: -1,
+      pointerEvents: "none"
+    }}
+  />
+)}
 
 {/* PARTICULAS */}
 
@@ -913,24 +950,39 @@ position: "relative",
     }}
   >
 
-    <h1
+    <motion.h1
   style={{
     fontSize: "90px",
     fontWeight: "900",
     letterSpacing: "8px",
-    color: "#38bdf8",
-
-    textShadow: `
-      0 0 1px #38bdf8,
-      0 0 1px #38bdf8,
-      0 0 60px #38bdf8
-    `,
-
-    marginBottom: "10px"
+    color: "#ff9d2e",
+    textShadow: "0 0 15px rgba(198, 118, 28, 0.7)",
+    marginBottom: "10px",
+    display: "flex",
+    justifyContent: "center"
   }}
 >
-  CIBER RETO
-</h1>
+  {"CIBER RETO".split("").map((letra, index) => (
+    <motion.span
+      key={index}
+      animate={{
+        y: [0, -5, 0, 4, 0]
+      }}
+      transition={{
+        duration: 8,
+        repeat: Infinity,
+        ease: "easeInOut",
+        delay: index * 0.18
+      }}
+      style={{
+        display: "inline-block",
+        whiteSpace: "pre"
+      }}
+    >
+      {letra}
+    </motion.span>
+  ))}
+</motion.h1>
 <br />
 <h2
   style={{
@@ -1135,13 +1187,14 @@ raceMusicRef.current.pause();
     fontWeight: "bold",
     color: "white",
     cursor: "pointer",
+    textShadow: "0 0 15px rgba(31, 48, 158, 0.7)",
     background:
       "linear-gradient(90deg,#2563eb,#38bdf8)",
     boxShadow:
       "0 0 25px rgba(56,189,248,.5)"
   }}
 >
-  🚀 INICIAR CARRERA
+  👻 INICIAR CARRERA
 </button>
 
 </div>

@@ -46,7 +46,9 @@ export default function WinnerScreen({ winner }) {
           fontSize:"140px",
 
           textShadow:
-            "0 0 40px gold"
+            "0 0 40px gold",
+          
+          marginBottom: "25px"
         }}
 
       >
@@ -54,6 +56,8 @@ export default function WinnerScreen({ winner }) {
         🏆
 
       </motion.div>
+
+      <br />
 
       <motion.div
 
@@ -76,7 +80,9 @@ export default function WinnerScreen({ winner }) {
           fontSize:"100px",
 
           animation:
-            "winnerPulse 1.2s infinite"
+            "winnerPulse 1.2s infinite",
+            marginTop: "10px",
+  marginBottom: "10px"
         }}
 
       >
