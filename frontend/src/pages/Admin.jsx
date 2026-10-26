@@ -27,11 +27,41 @@ export default function Admin() {
   // ====================
   // Estados
   // ====================
-const lobbyMusicRef =
-  useRef(null);
+const lobbyMusicRef = useRef(null);
+const raceMusicRef = useRef(null);
+const voiceRef = useRef(null);
+const numeroPreguntaRef = useRef(0);
+const tipsDisponiblesRef = useRef([
+  "10_tips_1.mp3",
+  "11_tips_2.mp3",
+  "12_tips_3.mp3",
+  "13_tips_4.mp3",
+  "14_tips_5.mp3",
+  "15_tips_6.mp3",
+  "16_tips_7.mp3",
+  "17_tips_8.mp3",
+  "18_tips_9.mp3",
+  "19_tips_10.mp3",
+  "20_tips_11.mp3",
+  "21_tips_12.mp3",
+  "22_tips_13.mp3",
+  "23_tips_14.mp3"
+]);
+const humorTimeoutRef = useRef(null);
 
-const raceMusicRef =
-  useRef(null);
+const humoresDisponiblesRef = useRef([
+  "04_humor_1.mp3",
+  "05_humor_2.mp3",
+  "06_humor_3.mp3",
+  "07_humor_4.mp3",
+  "08_humor_5.mp3",
+  "09_humor_6.mp3"
+]);
+const tipTimeoutRef = useRef(null);
+
+const lobbyVoiceActiveRef = useRef(true);
+
+
 
 const [musicStarted,
 setMusicStarted] =
@@ -39,10 +69,61 @@ useState(false);
 
 const volverInicio = () => {
 
+  // Detener cualquier voz que esté reproduciéndose
+  if (voiceRef.current) {
+    voiceRef.current.pause();
+    voiceRef.current.currentTime = 0;
+  }
+  
+  // Cancelar tip pendiente
+  if (tipTimeoutRef.current) {
+    clearTimeout(tipTimeoutRef.current);
+    tipTimeoutRef.current = null;
+  }
+
+  lobbyVoiceActiveRef.current = true;
+
+  // Cancelar cualquier humor que haya quedado programado
+  if (humorTimeoutRef.current) {
+    clearTimeout(humorTimeoutRef.current);
+    humorTimeoutRef.current = null;
+  }
+
+
+  tipsDisponiblesRef.current = [
+  "10_tips_1.mp3",
+  "11_tips_2.mp3",
+  "12_tips_3.mp3",
+  "13_tips_4.mp3",
+  "14_tips_5.mp3",
+  "15_tips_6.mp3",
+  "16_tips_7.mp3",
+  "17_tips_8.mp3",
+  "18_tips_9.mp3",
+  "19_tips_10.mp3",
+  "20_tips_11.mp3",
+  "21_tips_12.mp3",
+  "22_tips_13.mp3",
+  "23_tips_14.mp3"
+];
+
   socket.emit(
-  "resetRace",
-  "LOCAL"
-);
+    "resetRace",
+    "LOCAL"
+  );
+
+  // Reiniciar contador de preguntas
+  numeroPreguntaRef.current = 0;
+
+  // Reiniciar pool de humores
+  humoresDisponiblesRef.current = [
+    "04_humor_1.mp3",
+    "05_humor_2.mp3",
+    "06_humor_3.mp3",
+    "07_humor_4.mp3",
+    "08_humor_5.mp3",
+    "09_humor_6.mp3"
+  ];
 
   setRaceStarted(false);
   setFinalRanking(null);
@@ -58,15 +139,117 @@ const volverInicio = () => {
 
   if (musicStarted) {
 
-  raceMusicRef.current.pause();
+    raceMusicRef.current.pause();
 
-  raceMusicRef.current.currentTime = 0;
+    raceMusicRef.current.currentTime = 0;
 
-  lobbyMusicRef.current.currentTime = 0;
+    lobbyMusicRef.current.currentTime = 0;
 
-  lobbyMusicRef.current.play();
+    lobbyMusicRef.current.play();
 
-}
+  }
+
+  iniciarLobbyVoz();
+};
+
+const reproducirVoz = (archivo, alTerminar = null) => {
+  if (voiceRef.current) {
+    voiceRef.current.pause();
+    voiceRef.current.currentTime = 0;
+  }
+
+  voiceRef.current = new Audio(`/audio/${archivo}`);
+  voiceRef.current.volume = 1;
+
+  if (alTerminar) {
+    voiceRef.current.onended = alTerminar;
+  }
+
+  voiceRef.current.play().catch(err => {
+    console.log("No se pudo reproducir el audio:", err);
+  });
+};
+
+const reproducirHumor = () => {
+  if (humoresDisponiblesRef.current.length === 0) {
+    humoresDisponiblesRef.current = [
+      "04_humor_1.mp3",
+      "05_humor_2.mp3",
+      "06_humor_3.mp3",
+      "07_humor_4.mp3",
+      "08_humor_5.mp3",
+      "09_humor_6.mp3"
+    ];
+  }
+
+  const indice = Math.floor(
+    Math.random() * humoresDisponiblesRef.current.length
+  );
+
+  const audio =
+    humoresDisponiblesRef.current.splice(indice, 1)[0];
+
+  reproducirVoz(audio);
+};
+
+const reproducirTip = () => {
+
+  if (tipsDisponiblesRef.current.length === 0) {
+    tipsDisponiblesRef.current = [
+      "10_tips_1.mp3",
+      "11_tips_2.mp3",
+      "12_tips_3.mp3",
+      "13_tips_4.mp3",
+      "14_tips_5.mp3",
+      "15_tips_6.mp3",
+      "16_tips_7.mp3",
+      "17_tips_8.mp3",
+      "18_tips_9.mp3",
+      "19_tips_10.mp3",
+      "20_tips_11.mp3",
+      "21_tips_12.mp3",
+      "22_tips_13.mp3",
+      "23_tips_14.mp3"
+    ];
+  }
+
+  const indice = Math.floor(
+    Math.random() * tipsDisponiblesRef.current.length
+  );
+
+  const tip =
+    tipsDisponiblesRef.current.splice(indice, 1)[0];
+
+  reproducirVoz(tip, () => {
+
+    tipTimeoutRef.current = setTimeout(() => {
+      reproducirTip();
+    }, 12000);
+
+  });
+};
+
+const iniciarLobbyVoz = () => {
+
+  tipTimeoutRef.current = setTimeout(() => {
+
+    if (!lobbyVoiceActiveRef.current) return;
+
+    reproducirVoz("00_intro.mp3", () => {
+
+      if (!lobbyVoiceActiveRef.current) return;
+
+      tipTimeoutRef.current = setTimeout(() => {
+
+        if (!lobbyVoiceActiveRef.current) return;
+
+        reproducirTip();
+
+      }, 5000);
+
+    });
+
+  }, 5000);
 };
 
   const [roomCode, setRoomCode] =
@@ -229,28 +412,35 @@ socket.on(
   }
 );
 
-socket.on(
-  "questionStarted",
-  (data) => {
+socket.on("questionStarted", (data) => {
+  lobbyVoiceActiveRef.current = false;
+  setRaceStarted(true);
+  setCurrentQuestion(data.pregunta);
+  setTimeLeft(data.tiempo);
+  setAllAnswered(false);
+  setShowExplanation(false);
+  setExplanationData(null);
 
-    setRaceStarted(true);
+  // Contamos la pregunta actual
+  numeroPreguntaRef.current += 1;
 
-    setCurrentQuestion(
-      data.pregunta
-    );
-
-    setTimeLeft(
-      data.tiempo
-    );
-
-    setAllAnswered(false);
-
-    setShowExplanation(false);
-
-    setExplanationData(null);
-
+  // Primera pregunta
+  if (numeroPreguntaRef.current === 1) {
+    reproducirVoz("01_primera_pregunta.mp3");
+  } 
+  // Preguntas siguientes: alternamos
+  else if (numeroPreguntaRef.current % 2 === 0) {
+    reproducirVoz("03_nueva_pregunta_2.mp3");
+  } 
+  else {
+    reproducirVoz("02_nueva_pregunta_1.mp3");
   }
-);
+
+  humorTimeoutRef.current = setTimeout(() => {
+  reproducirHumor();
+  humorTimeoutRef.current = null;
+}, 9000);
+});
 
 socket.on(
   "showExplanation",
@@ -426,7 +616,7 @@ useEffect(() => {
     );
 
   lobbyMusicRef.current.loop = true;
-  lobbyMusicRef.current.volume = 0.30;
+  lobbyMusicRef.current.volume = 0.48;
 
   raceMusicRef.current =
     new Audio(
@@ -434,7 +624,22 @@ useEffect(() => {
     );
 
   raceMusicRef.current.loop = true;
-  raceMusicRef.current.volume = 0.15;
+  raceMusicRef.current.volume = 0.40;
+
+}, []);
+
+useEffect(() => {
+
+  iniciarLobbyVoz();
+
+  return () => {
+
+    if (tipTimeoutRef.current) {
+      clearTimeout(tipTimeoutRef.current);
+      tipTimeoutRef.current = null;
+    }
+
+  };
 
 }, []);
 
@@ -1171,6 +1376,8 @@ raceMusicRef.current.pause();
   raceMusicRef.current.play();
 
 }
+
+numeroPreguntaRef.current = 0;
 
     socket.emit(
       "startRace",
