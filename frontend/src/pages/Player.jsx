@@ -1074,12 +1074,12 @@ return (
 >
 
   {[
-  { top: "10%", size: 52, duration: 14, delay: 0, opacity: 0.16 },
-  { top: "25%", size: 40, duration: 11, delay: 3, opacity: 0.12 },
-  { top: "40%", size: 58, duration: 16, delay: 6, opacity: 0.14 },
-  { top: "58%", size: 44, duration: 12, delay: 1, opacity: 0.11 },
-  { top: "72%", size: 50, duration: 15, delay: 5, opacity: 0.13 },
-  { top: "85%", size: 38, duration: 10, delay: 8, opacity: 0.10 }
+  { top: "10%", size: 52, duration: 14, delay: 0, opacity: 0.26 },
+  { top: "25%", size: 40, duration: 11, delay: 3, opacity: 0.22 },
+  { top: "40%", size: 58, duration: 16, delay: 6, opacity: 0.24 },
+  { top: "58%", size: 44, duration: 12, delay: 1, opacity: 0.21 },
+  { top: "72%", size: 50, duration: 15, delay: 5, opacity: 0.23 },
+  { top: "85%", size: 38, duration: 10, delay: 8, opacity: 0.20 }
 ].map((bat, index) => (
   <motion.img
     key={index}
