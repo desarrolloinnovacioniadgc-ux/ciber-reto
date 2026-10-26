@@ -413,7 +413,21 @@ socket.on(
 );
 
 socket.on("questionStarted", (data) => {
+
+  // Detener definitivamente el sistema de tips del lobby
   lobbyVoiceActiveRef.current = false;
+
+  if (tipTimeoutRef.current) {
+    clearTimeout(tipTimeoutRef.current);
+    tipTimeoutRef.current = null;
+  }
+
+  // Cancelar humor anterior si hubiera quedado programado
+  if (humorTimeoutRef.current) {
+    clearTimeout(humorTimeoutRef.current);
+    humorTimeoutRef.current = null;
+  }
+
   setRaceStarted(true);
   setCurrentQuestion(data.pregunta);
   setTimeLeft(data.tiempo);
@@ -427,19 +441,23 @@ socket.on("questionStarted", (data) => {
   // Primera pregunta
   if (numeroPreguntaRef.current === 1) {
     reproducirVoz("01_primera_pregunta.mp3");
-  } 
+  }
+
   // Preguntas siguientes: alternamos
   else if (numeroPreguntaRef.current % 2 === 0) {
     reproducirVoz("03_nueva_pregunta_2.mp3");
-  } 
+  }
+
   else {
     reproducirVoz("02_nueva_pregunta_1.mp3");
   }
 
+  // Humor a los 9 segundos
   humorTimeoutRef.current = setTimeout(() => {
-  reproducirHumor();
-  humorTimeoutRef.current = null;
-}, 9000);
+    reproducirHumor();
+    humorTimeoutRef.current = null;
+  }, 9000);
+
 });
 
 socket.on(
