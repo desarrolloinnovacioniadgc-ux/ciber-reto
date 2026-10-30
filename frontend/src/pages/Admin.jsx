@@ -390,24 +390,27 @@ socket.on(
     );
 
     setWinner(
-      ranking[0]
-    );
+  ranking[0]
+);
 
-    setShowWinner(
-      true
-    );
+setShowWinner(
+  true
+);
 
-    setTimeout(() => {
+// Audio de victoria
+reproducirVoz("30_victoria.mp3");
 
-      setShowWinner(
-        false
-      );
+setTimeout(() => {
 
-      setFinalRanking(
-        ranking
-      );
+  setShowWinner(
+    false
+  );
 
-    }, 3000);
+  setFinalRanking(
+    ranking
+  );
+
+}, 5000);
 
   }
 );
@@ -660,6 +663,12 @@ useEffect(() => {
   };
 
 }, []);
+
+useEffect(() => {
+  if (finalRanking) {
+    reproducirVoz("31_cierre.mp3");
+  }
+}, [finalRanking]);
 
   // ====================
   // Render
