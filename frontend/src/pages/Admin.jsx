@@ -1457,7 +1457,7 @@ numeroPreguntaRef.current = 0;
   );
 
 const playerCar =
-  CARS[playerIndex % CARS.length];
+  CARS[Number(playerIndex) % CARS.length] || CARS[0];
 
 const progressColor =
   CAR_COLORS[playerIndex % CAR_COLORS.length];
