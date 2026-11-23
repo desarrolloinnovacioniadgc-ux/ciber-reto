@@ -1462,6 +1462,9 @@ const playerCar =
 const progressColor =
   CAR_COLORS[playerIndex % CAR_COLORS.length];
 
+  console.log("playerIndex:", playerIndex);
+console.log("playerCar:", playerCar);
+
   return (
 
     <div
