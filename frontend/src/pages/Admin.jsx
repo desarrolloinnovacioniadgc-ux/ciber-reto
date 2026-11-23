@@ -1631,11 +1631,9 @@ right: "50px",
 >
 
   <img
-  src="/cars/blue.gif"
+  src={playerCar}
   style={{
-    width: "70px",
-    height: "70px",
-    objectFit: "contain"
+    width: "70px"
   }}
 />
 
