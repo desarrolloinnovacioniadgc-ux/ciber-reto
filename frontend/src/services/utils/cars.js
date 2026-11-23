@@ -1,15 +1,15 @@
 export const CARS = [
 
-  "/cars/blue.png",
+  "/cars/blue.gif",
 
-  "/cars/red.png",
+  "/cars/red.gif",
 
-  "/cars/green.png",
+  "/cars/green.gif",
 
-  "/cars/yellow.png",
+  "/cars/yellow.gif",
 
-  "/cars/purple.png",
+  "/cars/purple.gif",
 
-  "/cars/orange.png"
+  "/cars/orange.gif"
 
 ];
