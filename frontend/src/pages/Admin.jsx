@@ -1458,6 +1458,10 @@ numeroPreguntaRef.current = 0;
 
 const playerCar = CARS[playerIndex % CARS.length];
 
+console.log("PLAYER INDEX:", playerIndex);
+console.log("CARS:", CARS);
+console.log("PLAYER CAR:", CARS[playerIndex % CARS.length]);
+
 const progressColor =
   CAR_COLORS[playerIndex % CAR_COLORS.length];
 
